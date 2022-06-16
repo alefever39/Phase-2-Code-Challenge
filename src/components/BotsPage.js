@@ -3,12 +3,14 @@ import YourBotArmy from "./YourBotArmy";
 import BotCollection from "./BotCollection";
 import BotSpecs from "./BotSpecs";
 import SortBar from "./SortBar";
+import { unstable_renderSubtreeIntoContainer } from "react-dom";
 
 function BotsPage() {
   const [bots, setBots] = useState([]);
   const [yourBotArmy, setYourBotArmy] = useState([]);
   const [specView, setSpecView] = useState(false);
   const [botSelection, setBotSelection] = useState({});
+  const [filteredBots, setFilteredBots] = useState(bots);
 
   useEffect(() => {
     fetch("http://localhost:8002/bots")
@@ -56,6 +58,21 @@ function BotsPage() {
     setBots(bots.filter((bot) => bot.id !== id));
   }
 
+  function onSortChange(sortType) {
+    const unsorted = [...bots];
+    const sorted = unsorted.sort((a, b) => {
+      let aSort = a[sortType];
+      let bSort = b[sortType];
+      return aSort > bSort ? -1 : aSort < bSort ? 1 : 0;
+    });
+    setBots(sorted);
+  }
+
+  // function onFilterChange(filterArray) {
+  //   const filterTrue = filterArray.filter((classType) => classType.checked);
+  //   setFilteredBots(filteredBots.filter(bot => )
+  // }
+
   return (
     <div>
       <YourBotArmy
@@ -63,7 +80,7 @@ function BotsPage() {
         onClick={onRemoveBot}
         onDelete={handleDelete}
       />
-      <SortBar />
+      <SortBar onSortChange={onSortChange} />
       {specView ? (
         <BotSpecs bot={botSelection} onAddBot={onAddBot} onGoBack={onGoBack} />
       ) : (

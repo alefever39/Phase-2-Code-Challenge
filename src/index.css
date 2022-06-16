@@ -32,6 +32,10 @@ body {
   background-color: aqua;
 }
 
+.classType {
+  margin-left: 5px;
+}
+
 /* .sort-bar {
   margin-left: 10px;
 } */
