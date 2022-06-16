@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import YourBotArmy from "./YourBotArmy";
 import BotCollection from "./BotCollection";
 import BotSpecs from "./BotSpecs";
+import SortBar from "./SortBar";
 
 function BotsPage() {
   const [bots, setBots] = useState([]);
@@ -62,6 +63,7 @@ function BotsPage() {
         onClick={onRemoveBot}
         onDelete={handleDelete}
       />
+      <SortBar />
       {specView ? (
         <BotSpecs bot={botSelection} onAddBot={onAddBot} onGoBack={onGoBack} />
       ) : (

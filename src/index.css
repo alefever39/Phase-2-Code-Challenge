@@ -22,3 +22,16 @@ body {
 .ui.grid {
   padding: 0px 20px;
 }
+
+.menu {
+  display: flex;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  align-items: center;
+  justify-content: space-around;
+  background-color: aqua;
+}
+
+/* .sort-bar {
+  margin-left: 10px;
+} */
