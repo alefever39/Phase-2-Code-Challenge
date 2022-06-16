@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import YourBotArmy from "./YourBotArmy";
 import BotCollection from "./BotCollection";
+import BotSpecs from "./BotSpecs";
 
 function BotsPage() {
   const [bots, setBots] = useState([]);
   const [yourBotArmy, setYourBotArmy] = useState([]);
+  const [specView, setSpecView] = useState(false);
+  const [botSelection, setBotSelection] = useState({});
 
   useEffect(() => {
     fetch("http://localhost:8002/bots")
@@ -13,19 +16,32 @@ function BotsPage() {
       .catch((error) => window.alert(error));
   }, []);
 
-  function onAddBot(e, newBot) {
+  function botSelected(e, newBot) {
     if (e.target.textContent !== "x") {
-      const botPresent = yourBotArmy.find((bot) => bot.id === newBot.id);
-      if (!botPresent) {
-        setYourBotArmy((yourBotArmy) => {
-          return [...yourBotArmy, newBot];
-        });
-      }
+      setSpecView(true);
+      setBotSelection(newBot);
     }
+  }
+
+  function onAddBot(newBot) {
+    const botPresent = yourBotArmy.find((bot) => bot.id === newBot.id);
+    if (!botPresent) {
+      setYourBotArmy((yourBotArmy) => {
+        return [...yourBotArmy, newBot];
+      });
+      setBots((bots) => bots.filter((bot) => bot.id !== newBot.id));
+    }
+  }
+
+  function onGoBack() {
+    setSpecView(false);
   }
 
   function onRemoveBot(e, removeBot) {
     setYourBotArmy(yourBotArmy.filter((bot) => bot.id !== removeBot.id));
+    setBots((bots) => {
+      return [...bots, removeBot];
+    });
   }
 
   function handleDelete(id) {
@@ -46,7 +62,15 @@ function BotsPage() {
         onClick={onRemoveBot}
         onDelete={handleDelete}
       />
-      <BotCollection bots={bots} onClick={onAddBot} onDelete={handleDelete} />
+      {specView ? (
+        <BotSpecs bot={botSelection} onAddBot={onAddBot} onGoBack={onGoBack} />
+      ) : (
+        <BotCollection
+          bots={bots}
+          onClick={botSelected}
+          onDelete={handleDelete}
+        />
+      )}
     </div>
   );
 }
