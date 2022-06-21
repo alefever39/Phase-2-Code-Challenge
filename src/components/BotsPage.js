@@ -28,11 +28,18 @@ function BotsPage() {
 
   function onAddBot(newBot) {
     const botPresent = yourBotArmy.find((bot) => bot.id === newBot.id);
+    const classPresent = yourBotArmy.find(
+      (bot) => bot["bot_class"] === newBot["bot_class"]
+    );
     if (!botPresent) {
-      setYourBotArmy((yourBotArmy) => {
-        return [...yourBotArmy, newBot];
-      });
-      setBots((bots) => bots.filter((bot) => bot.id !== newBot.id));
+      if (classPresent) {
+        alert(`You already have a ${newBot["bot_class"]} bot`);
+      } else {
+        setYourBotArmy((yourBotArmy) => {
+          return [...yourBotArmy, newBot];
+        });
+        setBots((bots) => bots.filter((bot) => bot.id !== newBot.id));
+      }
     }
   }
 
@@ -41,10 +48,12 @@ function BotsPage() {
   }
 
   function onRemoveBot(e, removeBot) {
-    setYourBotArmy(yourBotArmy.filter((bot) => bot.id !== removeBot.id));
-    setBots((bots) => {
-      return [...bots, removeBot];
-    });
+    if (e.target.textContent !== "x") {
+      setYourBotArmy(yourBotArmy.filter((bot) => bot.id !== removeBot.id));
+      setBots((bots) => {
+        return [...bots, removeBot];
+      });
+    }
   }
 
   function handleDelete(id) {

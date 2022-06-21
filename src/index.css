@@ -36,6 +36,11 @@ body {
   margin-left: 5px;
 }
 
+.oneCard {
+  height: 100%;
+  width: 20%;
+}
+
 /* .sort-bar {
   margin-left: 10px;
 } */
